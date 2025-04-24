@@ -18,14 +18,14 @@ from scipy.stats import zscore
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import MinMaxScaler
+import gdown
 
 """## Load Dataset"""
 
-#df = pd.read_csv('weather.csv')
-
-from google.colab import drive
-drive.mount('/content/drive')
-df = pd.read_csv('/content/drive/MyDrive/Classroom/BMCS2114 (Machine Learning) 202501 (Lecture)/ML Assignment/minute_weather.csv')
+url = 'https://drive.google.com/file/d/10FpRWYTw6K2wX3csaUv1T7B8kf0DiDqG/view?usp=drive_link'
+output = 'minute_weather.csv'
+gdown.download(url, output, quiet=False)
+df = pd.read_csv('minute_weather.csv')
 
 """## Explore Dataset"""
 
