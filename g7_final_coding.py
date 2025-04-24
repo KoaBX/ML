@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import MinMaxScaler
 import gdown
+import streamlit as st
 
 def main():
     st.title("🌤️ Wind Pattern Clustering App")
