@@ -26,7 +26,7 @@ st.title("🌤️ Wind Pattern Clustering App")
 st.write("This app clusters weather data using KMeans, DBSCAN, and Hierarchical clustering.")
 """## Load Dataset"""
 
-url = 'https://drive.google.com/file/d/10FpRWYTw6K2wX3csaUv1T7B8kf0DiDqG/view?usp=drive_link'
+url = 'https://drive.google.com/file/d/10FpRWYTw6K2wX3csaUv1T7B8kf0DiDqG'
 output = 'minute_weather.csv'
 gdown.download(url, output, quiet=False)
 df = pd.read_csv('minute_weather.csv')
