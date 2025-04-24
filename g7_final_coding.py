@@ -29,11 +29,7 @@ def main():
     url = 'https://drive.google.com/file/d/10FpRWYTw6K2wX3csaUv1T7B8kf0DiDqG/view?usp=drive_link'
     output = 'minute_weather.csv'
     gdown.download(url, output, quiet=False)
-    st.info("Loading dataset...")
-    try:
-        df = pd.read_csv('minute_weather.csv')
-    except FileNotFoundError:
-        st.error("Dataset not found. Please make sure the file is available.")
+    df = pd.read_csv('minute_weather.csv')
     
     """## Explore Dataset"""
     
