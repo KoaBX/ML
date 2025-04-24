@@ -57,7 +57,7 @@ print(df.describe())
 df.columns = df.columns.str.strip()
 
 #Timestamp processing
-df['hpwren_timestamp'] = pd.to_datetime(df['full_timestamp'])
+df['hpwren_timestamp'] = pd.to_datetime(df['hpwren_timestamp'])
 
 # Extract useful fe from the timestamp
 df['year'] = df['hpwren_timestamp'].dt.year
