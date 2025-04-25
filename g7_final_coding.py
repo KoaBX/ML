@@ -10,6 +10,8 @@ Original file is located at
 
 ## Libraries
 """
+python -m pip install streamlit==1.24.0
+python -m streamlit --version
 
 import pandas as pd
 import numpy as np
