@@ -931,13 +931,8 @@ kmeans_cluster_analysis.iloc[:, -6:]
 # STREAMLIT
 """
 
-# !pip install streamlit
+# !pip install streamlit = 1.24.0
 import streamlit as st
 
 st.title('Leveraging Unsupervised Clustering of Wind Patterns to Enhance Urban Sustainability in Smart Cities')
 
-!pip freeze > requirements.txt
-from google.colab import files
-files.download('requirements.txt')
-
-https://g7-deployment.streamlit.app/
