@@ -30,16 +30,10 @@ import itertools
 
 """## Load Dataset"""
 
-file_id = "18GOX3qdZVnLqTEjAFMIP6O-1wKOJ0Rtj"
-# Create a downloadable URL
-download_url = f"https://drive.google.com/uc?id={file_id}"
-
-# Download the file
-output_path = "my_file.csv"
-gdown.download(download_url, output_path, quiet=False)
-
-# Read the CSV into a DataFrame
-df = pd.read_csv(output_path)
+url = 'https://drive.google.com/file/d/10FpRWYTw6K2wX3csaUv1T7B8kf0DiDqG'
+output = 'minute_weather.csv'
+gdown.download(url, output, quiet=False)
+df = pd.read_csv('minute_weather.csv')
 
 """## Explore Dataset"""
 
