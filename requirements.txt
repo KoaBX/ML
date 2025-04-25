@@ -9,3 +9,4 @@ plotly
 scipy
 seaborn
 gdown
+streamlit==1.24.0
