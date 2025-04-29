@@ -30,7 +30,7 @@ import itertools
 
 """## Load Dataset"""
 
-url = 'https://drive.google.com/file/d/10FpRWYTw6K2wX3csaUv1T7B8kf0DiDqG'
+url = 'https://drive.usercontent.google.com/download?id=18GOX3qdZVnLqTEjAFMIP6O-1wKOJ0Rtj'
 output = 'minute_weather.csv'
 gdown.download(url, output, quiet=False)
 df = pd.read_csv('minute_weather.csv')
