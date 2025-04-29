@@ -34,7 +34,7 @@ url = 'https://drive.usercontent.google.com/download?id=18GOX3qdZVnLqTEjAFMIP6O-
 output = 'minute_weather.csv'
 gdown.download(url, output, quiet=False)
 df = pd.read_csv('minute_weather.csv')
-print(df.columns.tolist())
+st.write("Available columns:", df.columns.tolist())
 """## Explore Dataset"""
 
 # Print the first five rows of the DataFrame.
