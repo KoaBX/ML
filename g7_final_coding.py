@@ -53,13 +53,17 @@ if uploaded_file is not None:
     labels = model.fit_predict(X_scaled)
     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
     st.markdown(f"**Detected Clusters:** {n_clusters}")
-
+    
     if n_clusters >= 2:
-        st.metric("Silhouette Score", f"{silhouette_score(X_scaled, labels):.4f}")
-        st.metric("Davies-Bouldin Index", f"{davies_bouldin_score(X_scaled, labels):.4f}")
-         st.metric("Calinski-Harabasz Index", f"{calinski_harabasz_score(X_scaled, labels):.4f}")
+        sil_score = silhouette_score(X_scaled, labels)
+        db_score = davies_bouldin_score(X_scaled, labels)
+        ch_score = calinski_harabasz_score(X_scaled, labels)
+    
+        st.metric("Silhouette Score", f"{sil_score:.4f}")
+        st.metric("Davies-Bouldin Index", f"{db_score:.4f}")
+        st.metric("Calinski-Harabasz Index", f"{ch_score:.4f}")
     else:
-        st.warning("Less than 2 clusters detected. Some metrics are not applicable.")
+        st.warning("⚠️ Less than 2 clusters detected — clustering metrics not applicable.")
 
     st.subheader("🧭 Cluster Visualization (PCA)")
     fig, ax = plt.subplots()
