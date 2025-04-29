@@ -29,16 +29,32 @@ import gdown
 import itertools
 import streamlit as st
 
-st.title('Leveraging Unsupervised Clustering of Wind Patterns to Enhance Urban Sustainability in Smart Cities')
+import streamlit as st
+import pandas as pd
 
-"""## Load Dataset"""
+st.title("🌬️ Wind Pattern Clustering App")
 
-url = 'https://drive.usercontent.google.com/download?id=18GOX3qdZVnLqTEjAFMIP6O-1wKOJ0Rtj'
-output = 'minute_weather.csv'
-gdown.download(url, output, quiet=False)
-df = pd.read_csv('minute_weather.csv')
-st.write("Available columns:", df.columns.tolist())
-"""## Explore Dataset"""
+# 📥 File uploader widget
+uploaded_file = st.file_uploader("Upload your wind dataset (.csv)", type=["csv"])
+
+if uploaded_file is not None:
+    # Read the uploaded CSV into a DataFrame
+    df = pd.read_csv(uploaded_file)
+
+    # Clean column names just in case
+    df.columns = df.columns.str.strip()
+
+    # Show preview
+    st.subheader("📊 Data Preview")
+    st.write(df.head())
+    
+    # Optional: show available columns
+    st.subheader("📋 Available Columns")
+    st.write(df.columns.tolist())
+
+    # Proceed with EDA or clustering here...
+else:
+    st.warning("👆 Please upload a CSV file to proceed.")
 
 # Print the first five rows of the DataFrame.
 print(df.head())
