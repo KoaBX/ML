@@ -27,6 +27,9 @@ from sklearn.model_selection import GridSearchCV
 from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import gdown
 import itertools
+import streamlit as st
+
+st.title('Leveraging Unsupervised Clustering of Wind Patterns to Enhance Urban Sustainability in Smart Cities')
 
 """## Load Dataset"""
 
@@ -928,11 +931,4 @@ kmeans_cluster_analysis.iloc[:, -6:]
 
 * These clusters can provide insights into how urban design could be adjusted to improve ventilation or mitigate heat islands, depending on which type of wind pattern dominates different city areas.
 
-# STREAMLIT
-"""
-
-# !pip install streamlit = 1.24.0
-import streamlit as st
-
-st.title('Leveraging Unsupervised Clustering of Wind Patterns to Enhance Urban Sustainability in Smart Cities')
 
