@@ -904,31 +904,3 @@ kmeans_cluster_analysis.iloc[:, :6]
 # Print last 6 columns
 kmeans_cluster_analysis.iloc[:, -6:]
 
-####Based on the KMeans Cluster Centers Analysis, let's qualitatively describe each cluster:
-
-###**Cluster 0:**
-*   Air Pressure: High air pressure (+0.34).
-*   Temperature: Slightly higher than average (+0.14).
-*   Wind Speed: Generally low average wind speed (-0.32) and low maximum wind speed (-0.30).
-*   Relative Humidity: Low relative humidity (-0.38), indicating drier conditions.
-*   Wind Direction: Strong positive component in the x-axis of the wind direction (+1.01), meaning winds primarily come from the east or southeast.
-*   Description: This cluster could represent steady, mild winds in areas with stable weather conditions and low moisture. The wind likely flows in a predominantly consistent direction but with low speeds, ideal for areas where ventilation or cooling is needed but not excessive force.
-*   Qualitative description: "Moderate, steady winds with lower variability".
-
-###**Cluster 1:**
-*   Air Pressure: Lower air pressure (-0.26).
-*   Temperature: Slightly cooler than average (-0.11).
-*   Wind Speed: Moderate wind speeds (+0.24 for average and +0.23 for max wind speeds), indicating stronger winds compared to Cluster 0.
-*   Relative Humidity: Higher relative humidity (+0.29), indicating slightly more moisture in the air.
-*   Wind Direction: Strong negative components in the x-axis of wind direction (-0.76), suggesting winds primarily come from the west or northwest.
-*   Description: This cluster is associated with stronger, more variable winds, likely from changing weather patterns or different wind zones. The winds are more unpredictable, likely in areas affected by changing or turbulent weather conditions, with occasional rainstorms. This would be more suitable for regions needing wind energy generation or increased natural ventilation in buildings.
-*   Qualitative description: "Stronger, more erratic winds".
-
-###**Summary**
-* Cluster 0 represents areas with low wind speed and dry, stable conditions with moderate airflow from the southeast.
-
-* Cluster 1 represents regions with stronger winds and more humid, likely with winds from the northwest.
-
-* These clusters can provide insights into how urban design could be adjusted to improve ventilation or mitigate heat islands, depending on which type of wind pattern dominates different city areas.
-
-
