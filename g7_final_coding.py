@@ -6,7 +6,6 @@
 # 5. Result visualization
 # 6. Cluster analysis with dropdown
 
-enhanced_streamlit_code = '''
 import streamlit as st
 import pandas as pd
 import numpy as np
