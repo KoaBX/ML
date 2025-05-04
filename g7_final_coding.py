@@ -305,7 +305,7 @@ X_pca = pca.fit_transform(X_scaled)
 
 # Add PCA results and cluster labels to a DataFrame
 pca_df = pd.DataFrame(X_pca, columns=["PC1", "PC2"])
-pca_df['Cluster'] = labels_kmeans
+pca_df['Cluster'] = kmeans.labels_
 
 # Select cluster to view
 unique_clusters = sorted(pca_df['Cluster'].unique())
