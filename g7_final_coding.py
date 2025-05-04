@@ -298,10 +298,28 @@ kmeans_cluster_analysis = pd.DataFrame(kmeans_centers, columns=features)
 st.dataframe(kmeans_cluster_analysis)
 
 # Visualize feature distribution in each cluster
-st.subheader("Feature Distribution by Cluster (KMeans)")
-df_sample['KMeans Cluster'] = kmeans.labels_
-melted_df = pd.melt(df_sample.reset_index(), id_vars=['KMeans Cluster'], value_vars=features)
-fig2, ax2 = plt.subplots(figsize=(14, 6))
-sns.boxplot(data=melted_df, x='variable', y='value', hue='KMeans Cluster', ax=ax2)
-plt.xticks(rotation=45)
-st.pyplot(fig2)
+st.subheader("Cluster Visualization (KMeans)")
+# Apply PCA to reduce to 2 components
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+# Add PCA results and cluster labels to a DataFrame
+pca_df = pd.DataFrame(X_pca, columns=["PC1", "PC2"])
+pca_df['Cluster'] = labels_kmeans
+
+# Select cluster to view
+unique_clusters = sorted(pca_df['Cluster'].unique())
+selected_cluster = st.selectbox("Select a cluster to visualize (PCA):", unique_clusters)
+
+# Filter for the selected cluster
+filtered_pca_df = pca_df[pca_df['Cluster'] == selected_cluster]
+
+# Plot
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.scatter(filtered_pca_df["PC1"], filtered_pca_df["PC2"], alpha=0.7, label=f"Cluster {selected_cluster}")
+ax.set_title(f"PCA View of Cluster {selected_cluster}")
+ax.set_xlabel("Principal Component 1")
+ax.set_ylabel("Principal Component 2")
+ax.legend()
+
+st.pyplot(fig)
