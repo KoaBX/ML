@@ -284,7 +284,7 @@ else:
     st.warning("Only one cluster detected. Evaluation metrics not available.")
 
 # Visualize clusters using PCA
-fig, axs = plt.subplots(figsize=(18, 10), squeeze=False)
+fig, axs = plt.subplots(figsize=(8, 5), squeeze=False)
 axs[0, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='tab10')
 plt.tight_layout()
 st.pyplot(fig)
