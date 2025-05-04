@@ -29,12 +29,13 @@ st.title("Wind Pattern Analysis Dashboard")
 
 # 1. Data Input
 st.header("1. Data Input")
-uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
-if uploaded_file:
+uploaded_file = st.file_uploader("Upload your CSV dataset", type=["csv"])
+if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
+    st.success("File uploaded successfully!")
 else:
-    st.info("Using default dataset.")
-    df = pd.read_csv("my_file.csv")
+    st.warning("Please upload a CSV file to proceed.")
+    st.stop()  # Prevents the rest of the app from running until a file is uploaded
 
 st.dataframe(df.head())
 
