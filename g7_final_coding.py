@@ -77,24 +77,6 @@ if st.checkbox("Show boxplots"):
         ax.set_title(f"Boxplot of {col}")
         st.pyplot(fig)
 
-# Time Series Plot (if datetime available)
-if 'full_timestamp' in df.columns and st.checkbox("Show time series trends"):
-    ts_col = st.selectbox("Select variable to plot over time", columns)
-    fig, ax = plt.subplots(figsize=(10, 4))
-    df.set_index('full_timestamp')[ts_col].plot(ax=ax)
-    ax.set_title(f"{ts_col} over time")
-    st.pyplot(fig)
-
-# Distribution by categorical feature
-if st.checkbox("Show distribution by wind direction category"):
-    cat_col = st.selectbox("Select categorical variable", ['avg_wind_category', 'max_wind_category', 'min_wind_category'])
-    num_col = st.selectbox("Select numeric variable", columns)
-    fig, ax = plt.subplots()
-    sns.boxplot(data=df, x=cat_col, y=num_col, ax=ax)
-    ax.set_title(f"{num_col} by {cat_col}")
-    st.pyplot(fig)
-
-
 # 2. Data Preprocessing
 # Clean column names by stripping spaces
 df.columns = df.columns.str.strip()
