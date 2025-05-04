@@ -364,7 +364,7 @@ elif clustering_method == "SVM":
     st.pyplot(fig)
     
 elif clustering_method == "Spectral":
-    model = pectralClustering(n_clusters=2, random_state=42, affinity='nearest_neighbors').fit(X_scaled)
+    model = SpectralClustering(n_clusters=2, random_state=42, affinity='nearest_neighbors').fit(X_scaled)
     labels = model.labels_
     st.subheader("Clustering Evaluation")
     if len(set(labels)) > 1:
