@@ -294,8 +294,6 @@ elif clustering_method == "Spectral":
     model = pectralClustering(n_clusters=2, random_state=42, affinity='nearest_neighbors').fit(X_scaled)
     labels = model.labels_
 
-df['Cluster'] = labels
-
 # Cluster evaluation
 st.subheader("6. Clustering Evaluation")
 if len(set(labels)) > 1:
