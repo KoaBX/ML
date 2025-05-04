@@ -96,9 +96,7 @@ df.rename(columns={'hpwren_timestamp': 'full_timestamp'}, inplace=True)
 
 # Check for missing values
 missing_values = df.isnull().sum()
-
-# Display cleaned column names, missing values
-df.columns, missing_values
+df = df.dropna()
 
 # Check for duplicate rows
 duplicated_rows = df.duplicated().sum()
