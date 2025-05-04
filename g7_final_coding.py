@@ -258,7 +258,7 @@ X_pca = pca.fit_transform(X_scaled)
 # Clustering section
 st.subheader("Clustering")
 clustering_method = st.selectbox("Choose clustering method", [
-    "KMeans", "DBSCAN", "Agglomerative", "GMM", "SVM", "Spectral"])
+    "KMeans", "DBSCAN", "GMM", "SVM", "Spectral", "Agglomerative"])
 
 if clustering_method == "KMeans":
     model = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
