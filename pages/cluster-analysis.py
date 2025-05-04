@@ -25,7 +25,7 @@ features = [
     'max_wind_direction_x', 'max_wind_direction_y'
 ]
 
-scaler = MinMaxScaler()
+scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df)
 
 # 6. Cluster Analysis and Visualization
