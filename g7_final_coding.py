@@ -216,6 +216,12 @@ df_sample = df[features].sample(n=10000, random_state=42)
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df_sample)
 
+# Convert X_scaled to DataFrame
+X_scaled_df = pd.DataFrame(X_scaled, columns=features)
+
+# Export to CSV
+X_scaled_df.to_csv("X_scaled_output.csv", index=False)
+
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X_scaled)
 
