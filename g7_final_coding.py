@@ -24,8 +24,8 @@ from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 import gdown
 import itertools
 
-st.set_page_config(page_title="Wind Pattern Analysis", layout="wide")
-st.title("Wind Pattern Analysis Dashboard")
+st.set_page_config(page_title="Data Preprocessing", layout="wide")
+st.title("Data Preprocessing")
 
 # 1. Data Input
 st.header("Data Input")
