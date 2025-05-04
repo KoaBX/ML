@@ -283,8 +283,8 @@ if len(set(labels)) > 1:
 else:
     st.warning("Only one cluster detected. Evaluation metrics not available.")
 
-# Visualize clusters using PCA (2 rows of 3 plots each)
-fig, axs = plt.subplots(2, 3, figsize=(18, 10))  # 2 rows, 3 columns
+# Visualize clusters using PCA
+fig, axs = plt.subplots(1, 1, figsize=(18, 10))  # 2 rows, 3 columns
 axs[0, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='tab10')
 plt.tight_layout()
 st.pyplot(fig)
@@ -298,6 +298,7 @@ st.dataframe(kmeans_cluster_analysis)
 
 # Visualize feature distribution in each cluster
 st.subheader("Feature Distribution by Cluster (KMeans)")
+kmeans = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
 numeric_df['KMeans Cluster'] = labels_bestkmeans
 melted_df = pd.melt(numeric_df.reset_index(), id_vars=['KMeans Cluster'], value_vars=features)
 fig2, ax2 = plt.subplots(figsize=(14, 6))
