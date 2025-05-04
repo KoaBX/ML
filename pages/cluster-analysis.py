@@ -17,6 +17,14 @@ else:
     st.warning("Please upload a CSV file to proceed.")
     st.stop()  # Prevents the rest of the app from running until a file is uploaded
     
+features = [
+    'air_pressure', 'air_temp', 'avg_wind_speed', 'max_wind_speed',
+    'min_wind_speed', 'relative_humidity',
+    'avg_wind_direction_x', 'avg_wind_direction_y',
+    'min_wind_direction_x', 'min_wind_direction_y',
+    'max_wind_direction_x', 'max_wind_direction_y'
+]
+
 scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(df)
 
