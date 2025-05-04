@@ -299,7 +299,7 @@ st.dataframe(kmeans_cluster_analysis)
 
 # Visualize feature distribution in each cluster
 st.subheader("Feature Distribution by Cluster (KMeans)")
-numeric_df['KMeans Cluster'] = labels_bestkmeans
+numeric_df['KMeans Cluster'] = kmeans.labels_
 melted_df = pd.melt(numeric_df.reset_index(), id_vars=['KMeans Cluster'], value_vars=features)
 fig2, ax2 = plt.subplots(figsize=(14, 6))
 sns.boxplot(data=melted_df, x='variable', y='value', hue='KMeans Cluster', ax=ax2)
