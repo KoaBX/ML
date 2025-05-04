@@ -312,9 +312,9 @@ elif clustering_method == "Spectral":
 # Cluster evaluation
 st.subheader("6. Clustering Evaluation")
 if len(set(labels)) > 1:
-    silhouette = silhouette_score(scaled_data, labels)
-    db_score = davies_bouldin_score(scaled_data, labels)
-    ch_score = calinski_harabasz_score(scaled_data, labels)
+    silhouette = silhouette_score(X_scaled, labels)
+    db_score = davies_bouldin_score(X_scaled, labels)
+    ch_score = calinski_harabasz_score(X_scaled, labels)
 
     st.write(f"Silhouette Score: {silhouette:.2f}")
     st.write(f"Davies-Bouldin Score: {db_score:.2f}")
