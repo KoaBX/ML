@@ -49,26 +49,22 @@ visualize_columns = ['air_pressure', 'air_temp', 'avg_wind_direction', 'avg_wind
 visualize = df[visualize_columns]  # Select only these columns from df
 
 # Summary statistics
-if st.checkbox("Show summary statistics"):
-    st.write(visualize.describe())
+st.write(visualize.describe())
 
 # Correlation heatmap
-if st.checkbox("Show correlation heatmap"):
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.heatmap(visualize.corr(), annot=True, cmap="coolwarm", ax=ax)
-    st.pyplot(fig)
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.heatmap(visualize.corr(), annot=True, cmap="coolwarm", ax=ax)
+st.pyplot(fig)
 
 # Pairplot
-if st.checkbox("Show pairplot (may be slow for large data)"):
-    fig = sns.pairplot(visualize)
-    st.pyplot(fig)
+fig = sns.pairplot(visualize)
+st.pyplot(fig)
 
 # Histograms
-if st.checkbox("Show histograms"):
-    fig, ax = plt.subplots()
-    visualize.hist(ax=ax, bins=30, edgecolor='black')
-    ax.set_title(f"Histogram")
-    st.pyplot(fig)
+fig, ax = plt.subplots()
+visualize.hist(ax=ax, bins=30, edgecolor='black')
+ax.set_title(f"Histogram")
+st.pyplot(fig)
 
 # 2. Data Preprocessing
 # Clean column names by stripping spaces
