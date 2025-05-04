@@ -15,7 +15,9 @@ if uploaded_file is not None:
 else:
     st.warning("Please upload a CSV file to proceed.")
     st.stop()  # Prevents the rest of the app from running until a file is uploaded
-    
+
+X_scaled = scaler.fit_transform(df)
+
 # 6. Cluster Analysis and Visualization
 # Interpret KMeans Clusters
 st.subheader("KMeans Cluster Centers Analysis")
