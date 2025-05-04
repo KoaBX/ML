@@ -3,6 +3,7 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 st.set_page_config(page_title="KMeans Cluster Center Analysis", layout="wide")
 st.title("KMeans Cluster Centers Analysis")
