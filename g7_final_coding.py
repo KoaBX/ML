@@ -39,34 +39,6 @@ else:
 
 st.dataframe(df.head())
 
-# 2. EDA & Data Visualization
-st.header("3. Exploratory Data Analysis")
-
-visualize_columns = ['air_pressure', 'air_temp', 'avg_wind_direction', 'avg_wind_speed',
-                     'max_wind_direction', 'max_wind_speed', 'min_wind_direction',
-                     'min_wind_speed', 'relative_humidity', 'rain_accumulation', 'rain_duration']
-
-visualize = df[visualize_columns]  # Select only these columns from df
-
-# Summary statistics
-st.write(visualize.describe())
-
-# Correlation heatmap
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.heatmap(visualize.corr(), annot=True, cmap="coolwarm", ax=ax)
-st.pyplot(fig)
-
-# Pairplot
-fig = sns.pairplot(visualize)
-st.pyplot(fig)
-
-# Histograms
-fig, ax = plt.subplots()
-visualize.hist(ax=ax, bins=30, edgecolor='black')
-ax.set_title(f"Histogram")
-st.pyplot(fig)
-
-# 2. Data Preprocessing
 # Clean column names by stripping spaces
 df.columns = df.columns.str.strip()
 
