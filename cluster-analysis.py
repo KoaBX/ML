@@ -7,14 +7,15 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="KMeans Cluster Center Analysis", layout="wide")
 st.title("KMeans Cluster Centers Analysis")
 
-# Load or reuse your preprocessed data
-uploaded_file = st.file_uploader("Upload your dataset", type=["csv"])
-if uploaded_file:
+st.header("Data Input")
+uploaded_file = st.file_uploader("Upload your CSV dataset", type=["csv"])
+if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
-    numeric_df = df.select_dtypes(include='number').dropna()
-    features = numeric_df.columns
-    X_scaled = StandardScaler().fit_transform(numeric_df)
-
+    st.success("File uploaded successfully!")
+else:
+    st.warning("Please upload a CSV file to proceed.")
+    st.stop()  # Prevents the rest of the app from running until a file is uploaded
+    
     # Fit KMeans
     kmeans = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
     kmeans_centers = kmeans.cluster_centers_
