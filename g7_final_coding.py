@@ -12,16 +12,21 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-from sklearn.preprocessing import StandardScaler
+from scipy import stats
+from scipy.stats import zscore
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.svm import OneClassSVM, SVC
+from sklearn.cluster import DBSCAN, KMeans, AgglomerativeClustering, SpectralClustering
+from sklearn.mixture import GaussianMixture
 from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
-
-from io import StringIO
+from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
+from sklearn.model_selection import GridSearchCV
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+import gdown
+import itertools
 
 st.set_page_config(page_title="Comprehensive Clustering App", layout="wide")
-st.title("Clustering Dashboard with Analysis")
+st.title("Wind Pattern Analysis Dashboard")
 
 # 1. Data Input
 st.header("1. Data Input")
@@ -36,13 +41,59 @@ st.dataframe(df.head())
 
 # 2. EDA & Data Visualization
 st.header("3. Exploratory Data Analysis")
-if st.checkbox("Show summary statistics"):
-    st.write(df_selected.describe())
 
+# Column selector
+columns = st.multiselect("Select columns to explore", df.columns.tolist(), default=df.select_dtypes(include=['float64', 'int64']).columns.tolist())
+
+# Summary statistics
+if st.checkbox("Show summary statistics"):
+    st.write(df[columns].describe())
+
+# Correlation heatmap
 if st.checkbox("Show correlation heatmap"):
-    fig, ax = plt.subplots()
-    sns.heatmap(df_selected.corr(), annot=True, cmap="coolwarm", ax=ax)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(df[columns].corr(), annot=True, cmap="coolwarm", ax=ax)
     st.pyplot(fig)
+
+# Pairplot
+if st.checkbox("Show pairplot (may be slow for large data)"):
+    sample_df = df[columns].sample(n=min(1000, len(df)), random_state=42)
+    fig = sns.pairplot(sample_df)
+    st.pyplot(fig)
+
+# Histograms
+if st.checkbox("Show histograms"):
+    for col in columns:
+        fig, ax = plt.subplots()
+        df[col].hist(ax=ax, bins=30, edgecolor='black')
+        ax.set_title(f"Histogram of {col}")
+        st.pyplot(fig)
+
+# Boxplots
+if st.checkbox("Show boxplots"):
+    for col in columns:
+        fig, ax = plt.subplots()
+        sns.boxplot(data=df, x=col, ax=ax)
+        ax.set_title(f"Boxplot of {col}")
+        st.pyplot(fig)
+
+# Time Series Plot (if datetime available)
+if 'full_timestamp' in df.columns and st.checkbox("Show time series trends"):
+    ts_col = st.selectbox("Select variable to plot over time", columns)
+    fig, ax = plt.subplots(figsize=(10, 4))
+    df.set_index('full_timestamp')[ts_col].plot(ax=ax)
+    ax.set_title(f"{ts_col} over time")
+    st.pyplot(fig)
+
+# Distribution by categorical feature
+if st.checkbox("Show distribution by wind direction category"):
+    cat_col = st.selectbox("Select categorical variable", ['avg_wind_category', 'max_wind_category', 'min_wind_category'])
+    num_col = st.selectbox("Select numeric variable", columns)
+    fig, ax = plt.subplots()
+    sns.boxplot(data=df, x=cat_col, y=num_col, ax=ax)
+    ax.set_title(f"{num_col} by {cat_col}")
+    st.pyplot(fig)
+
 
 # 2. Data Preprocessing
 # Clean column names by stripping spaces
@@ -238,69 +289,45 @@ def evaluate_model(X, labels, name):
     
 
 # 4. Modeling (KMeans with tuned parameters)
-# Clustering - KMeans
-kmeans = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
-labels_bestkmeans = kmeans.labels_
+# Clustering section
+st.subheader("5. Clustering")
+clustering_method = st.selectbox("Choose clustering method", [
+    "KMeans", "DBSCAN", "Agglomerative", "GMM", "SVM", "Spectral"])
 
-# Clustering - DBSCAN
-dbscan = DBSCAN(eps=1.1, min_samples=10).fit(X_scaled)
-labels_bestdbscan = dbscan.labels_
+if clustering_method == "KMeans":
+    model = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
+    labels = model.labels_
+elif clustering_method == "DBSCAN":
+    model = DBSCAN(eps=1.1, min_samples=10).fit(X_scaled)
+    labels = model.labels_
+elif clustering_method == "Agglomerative":
+    model = AgglomerativeClustering(n_clusters=2).fit(X_scaled)
+    labels = model.labels_
+elif clustering_method == "GMM":
+    model = GaussianMixture(n_components=2, covariance_type='spherical', random_state=42).fit(X_scaled)
+    labels = model.predict(X_scaled)
+elif clustering_method == "SVM":
+    model = OneClassSVM(kernel='rbf', nu=0.01).fit(X_scaled)
+    labels = model.predict(X_scaled)
+    labels = [0 if l == -1 else 1 for l in labels]
+elif clustering_method == "Spectral":
+    model = pectralClustering(n_clusters=2, random_state=42, affinity='nearest_neighbors').fit(X_scaled)
+    labels = model.labels_
 
-# Clustering - Hierarchical
-hierarchical = AgglomerativeClustering(n_clusters=2).fit(X_scaled)
-labels_besthierarchical = hierarchical.labels_
+df['Cluster'] = labels
 
-# 4. Clustering - Gaussian Mixture
-gmm = GaussianMixture(n_components=2, covariance_type='spherical', random_state=42).fit(X_scaled)
-labels_bestgmm = gmm.predict(X_scaled)
+# Cluster evaluation
+st.subheader("6. Clustering Evaluation")
+if len(set(labels)) > 1:
+    silhouette = silhouette_score(scaled_data, labels)
+    db_score = davies_bouldin_score(scaled_data, labels)
+    ch_score = calinski_harabasz_score(scaled_data, labels)
 
-# 5. Clustering - Support Vector Clustering (SVC)
-svc = OneClassSVM(kernel='rbf', nu=0.01).fit(X_scaled)
-labels_bestsvc = svc.predict(X_scaled)
-labels_bestsvc = [0 if l == -1 else 1 for l in labels_bestsvc]
-
-# 6. Clustering - Spectral Clustering
-spectral = SpectralClustering(n_clusters=2, random_state=42, affinity='nearest_neighbors').fit(X_scaled)
-labels_bestspectral = spectral.labels_
-
-# 5. Result Visualization (PCA)
-best_results = [
-    evaluate_model(X_scaled, labels_bestkmeans, "KMeans"),
-    evaluate_model(X_scaled, labels_bestdbscan, "DBSCAN"),
-    evaluate_model(X_scaled, labels_besthierarchical, "Hierarchical"),
-    evaluate_model(X_scaled, labels_bestgmm, "Gaussian Mixture"),
-    evaluate_model(X_scaled, labels_bestspectral, "Spectral Clustering"),
-    evaluate_model(X_scaled, labels_bestsvc, "SVM Clustering")
-]
-
-best_results_df = pd.DataFrame(best_results, columns=["Model", "Num Clusters", "Silhouette Score", "Davies-Bouldin Index", "Calinski-Harabasz Index"])
-
-# Sort by Silhouette Score (or choose another metric)
-best_results_df.sort_values(by="Silhouette Score", ascending=False, inplace=True)
-
-fig, axes = plt.subplots(1, 3, figsize=(18, 5))
-
-# 1. Silhouette Score
-best_results_df.plot(x="Model", y="Silhouette Score", kind="bar", legend=False, color='skyblue', ax=axes[0])
-axes[0].set_title("Silhouette Score by Model")
-axes[0].set_ylabel("Silhouette Score")
-axes[0].tick_params(axis='x', rotation=45)
-
-# 2. Davies-Bouldin Index
-best_results_df.plot(x="Model", y="Davies-Bouldin Index", kind="bar", legend=False, color='salmon', ax=axes[1])
-axes[1].set_title("Davies-Bouldin Index (Lower is Better)")
-axes[1].set_ylabel("Davies-Bouldin Index")
-axes[1].tick_params(axis='x', rotation=45)
-
-# 3. Calinski-Harabasz Index
-best_results_df.plot(x="Model", y="Calinski-Harabasz Index", kind="bar", legend=False, color='seagreen', ax=axes[2])
-axes[2].set_title("Calinski-Harabasz Index (Higher is Better)")
-axes[2].set_ylabel("Calinski-Harabasz Index")
-axes[2].tick_params(axis='x', rotation=45)
-
-plt.tight_layout()
-plt.show()
-best_results_df
+    st.write(f"Silhouette Score: {silhouette:.2f}")
+    st.write(f"Davies-Bouldin Score: {db_score:.2f}")
+    st.write(f"Calinski-Harabasz Score: {ch_score:.2f}")
+else:
+    st.warning("Only one cluster detected. Evaluation metrics not available.")
 
 # Visualize clusters using PCA (2 rows of 3 plots each)
 fig, axs = plt.subplots(2, 3, figsize=(18, 10))  # 2 rows, 3 columns
@@ -323,27 +350,20 @@ axs[1, 2].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_bestspectral, cmap='tab10')
 axs[1, 2].set_title('Spectral Clustering')
 
 plt.tight_layout()
-plt.show()
-
-# Display the results dataframe
-best_results_df
+st.pyplot(fig)
 
 # 6. Cluster Analysis and Visualization
-st.header("6. Cluster Analysis")
-selected_cluster = st.selectbox("Select a cluster to explore", sorted(np.unique(labels)))
-cluster_data = df_selected[np.array(labels) == selected_cluster]
-st.write(f"Data for Cluster {selected_cluster}")
-st.dataframe(cluster_data)
+# Interpret KMeans Clusters
+st.subheader("KMeans Cluster Centers Analysis")
+kmeans_centers = kmeans.cluster_centers_
+kmeans_cluster_analysis = pd.DataFrame(kmeans_centers, columns=features)
+st.dataframe(kmeans_cluster_analysis)
 
-if st.checkbox("Show pairplot for selected cluster"):
-    st.write("Generating pairplot (may take a few seconds)...")
-    fig_pair = sns.pairplot(cluster_data)
-    st.pyplot(fig_pair)
-'''
-
-# Save updated app to a .py file
-enhanced_streamlit_path = "/mnt/data/streamlit_cluster_dashboard.py"
-with open(enhanced_streamlit_path, "w") as f:
-    f.write(enhanced_streamlit_code)
-
-enhanced_streamlit_path
+# Visualize feature distribution in each cluster
+st.subheader("Feature Distribution by Cluster (KMeans)")
+numeric_df['KMeans Cluster'] = labels_bestkmeans
+melted_df = pd.melt(numeric_df.reset_index(), id_vars=['KMeans Cluster'], value_vars=features)
+fig2, ax2 = plt.subplots(figsize=(14, 6))
+sns.boxplot(data=melted_df, x='variable', y='value', hue='KMeans Cluster', ax=ax2)
+plt.xticks(rotation=45)
+st.pyplot(fig2)
