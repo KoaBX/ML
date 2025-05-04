@@ -42,9 +42,6 @@ st.dataframe(df.head())
 # 2. EDA & Data Visualization
 st.header("3. Exploratory Data Analysis")
 
-# Column selector
-columns = st.multiselect("Select columns to explore", df.columns.tolist(), default=df.select_dtypes(include=['float64', 'int64']).columns.tolist())
-
 # Summary statistics
 if st.checkbox("Show summary statistics"):
     st.write(df[columns].describe())
