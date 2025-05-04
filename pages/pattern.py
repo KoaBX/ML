@@ -18,7 +18,7 @@ import gdown
 import itertools
 
 st.set_page_config(page_title="Wind Pattern Analysis", layout="wide")
-st.title("Wind Pattern Analysis Dashboard")
+st.title("Wind Pattern Analysis")
 
 # 1. Data Input
 st.header("Data Input")
