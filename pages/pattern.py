@@ -1,3 +1,35 @@
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+from scipy.stats import zscore
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.svm import OneClassSVM, SVC
+from sklearn.cluster import DBSCAN, KMeans, AgglomerativeClustering, SpectralClustering
+from sklearn.mixture import GaussianMixture
+from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
+from sklearn.model_selection import GridSearchCV
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+import gdown
+import itertools
+
+st.set_page_config(page_title="Wind Pattern Analysis", layout="wide")
+st.title("Wind Pattern Analysis Dashboard")
+
+# 1. Data Input
+st.header("Data Input")
+uploaded_file = st.file_uploader("Upload your CSV dataset", type=["csv"])
+if uploaded_file is not None:
+    df = pd.read_csv(uploaded_file)
+    st.success("File uploaded successfully!")
+else:
+    st.warning("Please upload a CSV file to proceed.")
+    st.stop()  # Prevents the rest of the app from running until a file is uploaded
+
 # 4. Modeling
 features = [
     'air_pressure', 'air_temp', 'avg_wind_speed', 'max_wind_speed',
