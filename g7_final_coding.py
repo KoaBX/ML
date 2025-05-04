@@ -268,7 +268,22 @@ def evaluate_model(X, labels, name):
     return (name, n_clusters, sil, db, ch)
     
 
-# 4. Modeling (KMeans with tuned parameters)
+# 4. Modeling
+features = [
+    'air_pressure', 'air_temp', 'avg_wind_speed', 'max_wind_speed',
+    'min_wind_speed', 'relative_humidity',
+    'avg_wind_direction_x', 'avg_wind_direction_y',
+    'min_wind_direction_x', 'min_wind_direction_y',
+    'max_wind_direction_x', 'max_wind_direction_y'
+]
+df_sample = df[features].sample(n=10000, random_state=42)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df_sample)
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+
 # Clustering section
 st.subheader("5. Clustering")
 clustering_method = st.selectbox("Choose clustering method", [
