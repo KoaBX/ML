@@ -292,13 +292,13 @@ st.pyplot(fig)
 # 6. Cluster Analysis and Visualization
 # Interpret KMeans Clusters
 st.subheader("KMeans Cluster Centers Analysis")
+kmeans = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
 kmeans_centers = kmeans.cluster_centers_
 kmeans_cluster_analysis = pd.DataFrame(kmeans_centers, columns=features)
 st.dataframe(kmeans_cluster_analysis)
 
 # Visualize feature distribution in each cluster
 st.subheader("Feature Distribution by Cluster (KMeans)")
-kmeans = KMeans(n_clusters=2, random_state=42).fit(X_scaled)
 numeric_df['KMeans Cluster'] = labels_bestkmeans
 melted_df = pd.melt(numeric_df.reset_index(), id_vars=['KMeans Cluster'], value_vars=features)
 fig2, ax2 = plt.subplots(figsize=(14, 6))
