@@ -331,24 +331,7 @@ else:
 
 # Visualize clusters using PCA (2 rows of 3 plots each)
 fig, axs = plt.subplots(2, 3, figsize=(18, 10))  # 2 rows, 3 columns
-axs[0, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_bestkmeans, cmap='tab10')
-axs[0, 0].set_title('KMeans Clustering')
-
-axs[0, 1].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_bestdbscan, cmap='tab10')
-axs[0, 1].set_title('DBSCAN Clustering')
-
-axs[0, 2].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_besthierarchical, cmap='tab10')
-axs[0, 2].set_title('Hierarchical Clustering')
-
-axs[1, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_bestgmm, cmap='tab10')
-axs[1, 0].set_title('Gaussian Mixture')
-
-axs[1, 1].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_bestsvc, cmap='tab10')
-axs[1, 1].set_title('SVM Clustering')
-
-axs[1, 2].scatter(X_pca[:, 0], X_pca[:, 1], c=labels_bestspectral, cmap='tab10')
-axs[1, 2].set_title('Spectral Clustering')
-
+axs[0, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='tab10')
 plt.tight_layout()
 st.pyplot(fig)
 
