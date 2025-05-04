@@ -42,37 +42,33 @@ st.dataframe(df.head())
 # 2. EDA & Data Visualization
 st.header("3. Exploratory Data Analysis")
 
+visualize_columns = ['air_pressure', 'air_temp', 'avg_wind_direction', 'avg_wind_speed',
+                     'max_wind_direction', 'max_wind_speed', 'min_wind_direction',
+                     'min_wind_speed', 'relative_humidity', 'rain_accumulation', 'rain_duration']
+
+visualize = df[visualize_columns]  # Select only these columns from df
+
 # Summary statistics
 if st.checkbox("Show summary statistics"):
-    st.write(df[columns].describe())
+    st.write(visualize.describe())
 
 # Correlation heatmap
 if st.checkbox("Show correlation heatmap"):
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.heatmap(df[columns].corr(), annot=True, cmap="coolwarm", ax=ax)
+    sns.heatmap(visualize.corr(), annot=True, cmap="coolwarm", ax=ax)
     st.pyplot(fig)
 
 # Pairplot
 if st.checkbox("Show pairplot (may be slow for large data)"):
-    sample_df = df[columns].sample(n=min(1000, len(df)), random_state=42)
-    fig = sns.pairplot(sample_df)
+    fig = sns.pairplot(visualize)
     st.pyplot(fig)
 
 # Histograms
 if st.checkbox("Show histograms"):
-    for col in columns:
-        fig, ax = plt.subplots()
-        df[col].hist(ax=ax, bins=30, edgecolor='black')
-        ax.set_title(f"Histogram of {col}")
-        st.pyplot(fig)
-
-# Boxplots
-if st.checkbox("Show boxplots"):
-    for col in columns:
-        fig, ax = plt.subplots()
-        sns.boxplot(data=df, x=col, ax=ax)
-        ax.set_title(f"Boxplot of {col}")
-        st.pyplot(fig)
+    fig, ax = plt.subplots()
+    visualize.hist(ax=ax, bins=30, edgecolor='black')
+    ax.set_title(f"Histogram")
+    st.pyplot(fig)
 
 # 2. Data Preprocessing
 # Clean column names by stripping spaces
