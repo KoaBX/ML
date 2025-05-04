@@ -300,25 +300,31 @@ elif clustering_method == "DBSCAN":
     st.pyplot(fig)
     
 elif clustering_method == "Agglomerative":
-    model = AgglomerativeClustering(n_clusters=2).fit(X_scaled)
-    labels = model.labels_
-    st.subheader("Clustering Evaluation")
-    if len(set(labels)) > 1:
-        silhouette = silhouette_score(X_scaled, labels)
-        db_score = davies_bouldin_score(X_scaled, labels)
-        ch_score = calinski_harabasz_score(X_scaled, labels)
-    
-        st.write(f"Silhouette Score: {silhouette:.2f}")
-        st.write(f"Davies-Bouldin Score: {db_score:.2f}")
-        st.write(f"Calinski-Harabasz Score: {ch_score:.2f}")
-    else:
-        st.warning("Only one cluster detected. Evaluation metrics not available.")
-    
-    # Visualize clusters using PCA
-    fig, axs = plt.subplots(figsize=(8, 5), squeeze=False)
-    axs[0, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='tab10')
-    plt.tight_layout()
-    st.pyplot(fig)
+    try:
+        model = AgglomerativeClustering(n_clusters=2)
+        labels = model.fit_predict(X_scaled)
+
+        st.subheader("Clustering Evaluation")
+        if len(set(labels)) > 1:
+            silhouette = silhouette_score(X_scaled, labels)
+            db_score = davies_bouldin_score(X_scaled, labels)
+            ch_score = calinski_harabasz_score(X_scaled, labels)
+
+            st.write(f"Silhouette Score: {silhouette:.2f}")
+            st.write(f"Davies-Bouldin Score: {db_score:.2f}")
+            st.write(f"Calinski-Harabasz Score: {ch_score:.2f}")
+        else:
+            st.warning("Only one cluster detected. Evaluation metrics not available.")
+
+        # Plot PCA
+        fig, axs = plt.subplots(figsize=(8, 5), squeeze=False)
+        axs[0, 0].scatter(X_pca[:, 0], X_pca[:, 1], c=labels, cmap='tab10')
+        axs[0, 0].set_title("Agglomerative Clustering (PCA)")
+        st.pyplot(fig)
+
+    except Exception as e:
+        st.error(f"Error in Agglomerative clustering: {str(e)}")
+
     
 elif clustering_method == "GMM":
     model = GaussianMixture(n_components=2, covariance_type='spherical', random_state=42).fit(X_scaled)
